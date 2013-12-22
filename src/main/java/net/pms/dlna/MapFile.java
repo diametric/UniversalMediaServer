@@ -113,7 +113,36 @@ public class MapFile extends DLNAResource {
 					if (f.isDirectory() && configuration.isHideEmptyFolders() && !FileUtil.isFolderRelevant(f, configuration)) {
 						LOGGER.debug("Ignoring empty/non-relevant directory: " + f.getName());
 					} else { // Otherwise add the file
-						addChild(new RealFile(f));
+						if (f.isDirectory() && configuration.isVirtualFoldersMergeDuplicates()) {
+							DLNAResource existingChild = searchByName(f.getName());
+
+							if (existingChild != null) {
+								if (existingChild instanceof MapFile) {
+									LOGGER.debug("Found duplicate folder: " + f.getName() + ", merging into existing folder.");
+	
+									// Already exists mapped, so just add to it.
+									List<File> files = ((MapFile)existingChild).getConf().getFiles();								
+									files.add(f);
+								} else {
+									// Is this scenario even possible?
+									LOGGER.debug("Found duplicate folder: " + f.getName() + ", creating merged folder.");
+
+									// Convert it into a MapFile now that we have duplicates.
+									MapFileConfiguration mfc = new MapFileConfiguration();
+									mfc.setName(f.getName());
+									List<File> files = new ArrayList<File>();
+									files.add(f);
+									mfc.setFiles(files);
+									MapFile mf = new MapFile(mfc);
+									
+									addChild(mf);
+								}
+							} else {
+								addChild(new RealFile(f));
+							}
+						} else {
+							addChild(new RealFile(f));
+						}
 					}
 				}
 			}

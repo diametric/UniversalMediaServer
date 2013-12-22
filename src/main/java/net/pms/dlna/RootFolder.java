@@ -133,6 +133,7 @@ public class RootFolder extends DLNAResource {
 		}
 
 		for (DLNAResource r : getVirtualFolders(tags)) {
+			LOGGER.debug("Adding VirtualFolder: " + r);
 			addChild(r);
 		}
 

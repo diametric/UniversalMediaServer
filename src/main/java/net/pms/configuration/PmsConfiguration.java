@@ -224,6 +224,7 @@ public class PmsConfiguration {
 	private static final String KEY_VIDEOTRANSCODE_START_DELAY = "videotranscode_start_delay";
 	private static final String KEY_VIRTUAL_FOLDERS = "virtual_folders";
 	private static final String KEY_VIRTUAL_FOLDERS_FILE = "virtual_folders_file";
+	private static final String KEY_VIRTUAL_FOLDERS_MERGE_DUPLICATES = "virtual_folders_merge_duplicates";
 	private static final String KEY_VLC_USE_HW_ACCELERATION = "vlc_use_hw_acceleration";
 	private static final String KEY_VLC_USE_EXPERIMENTAL_CODECS = "vlc_use_experimental_codecs";
 	private static final String KEY_VLC_AUDIO_SYNC_ENABLED = "vlc_audio_sync_enabled";
@@ -2484,6 +2485,10 @@ public class PmsConfiguration {
 
 	public String getVirtualFoldersFile(ArrayList<String> tags) {
 		return tagLoop(tags, ".vfolders.file", KEY_VIRTUAL_FOLDERS_FILE);
+	}
+
+	public boolean isVirtualFoldersMergeDuplicates() {
+		return getBoolean(KEY_VIRTUAL_FOLDERS_MERGE_DUPLICATES, false);
 	}
 
 	public String getProfilePath() {
